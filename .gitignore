@@ -3,6 +3,12 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Predownloaded video folders
+Kazama\ Iroha/
+Sakura\ Miko/
+Shirogane\ Noel/
+Usada\ Pekora/
+
 # User-specific files
 *.rsuser
 *.suo
