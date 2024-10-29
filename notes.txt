@@ -1,0 +1,7 @@
+Optimizing frame captures from the videos
+- "Kazama Iroha" took around 15 mins to run initially, with no optimization
+- Optimizations: 
+	- bottleneck is likely the writing to disk
+	- thus, multithreading may be bottlenecked her
+	- instead, we would like to queue the writes whilst also fetching further frames
+	- multithreading could make it faster by producing a similar result of one thread fetching whilst the other is writing

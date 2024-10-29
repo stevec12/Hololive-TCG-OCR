@@ -1,8 +1,30 @@
-import pandas as pd
+import cv2 as cv
+import os
+from pathlib import Path
 
-vids_df = pd.read_excel("tcg_vids.xlsx", header=0, index_col=None)
+testFolder = "test2"
+try:
+    os.mkdir(testFolder)
+except:
+    pass
 
-def vidFN(member : str, df : pd.DataFrame):
-    print(df.iloc[:,0])
+cap = cv.VideoCapture("v1.mp4")
 
-vidFN("fake", vids_df)
+fps = 30
+start_frame = fps*5 # number of seconds to initially skip
+cap.set(cv.CAP_PROP_FRAME_COUNT, start_frame)
+
+ret, frame = cap.read()
+frameNo = start_frame
+
+while(ret):
+    frame = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+    ssName = str(frameNo).zfill(7)
+    cv.imwrite(f"{testFolder}/{ssName}.jpg", frame)
+    # Skip ahead "skipN" of images
+    skipN = fps*3 # skip 3 seconds of frames
+    frameNo += skipN
+    cap.set(cv.CAP_PROP_POS_FRAMES, frameNo)
+    ret, frame = cap.read()
+
+cap.release()
