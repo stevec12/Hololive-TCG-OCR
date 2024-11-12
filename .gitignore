@@ -12,6 +12,9 @@ Usada\ Pekora/
 # Local test files
 v1.mp4
 test2/
+testss1/
+initialFilter.keras
+initialFilterPreds.py
 
 # User-specific files
 *.rsuser
