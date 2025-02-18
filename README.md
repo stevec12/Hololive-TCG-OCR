@@ -1,5 +1,11 @@
 # App Description
 Performs OCR on YouTube videos, extracting relevant text for different purposes. Here, the targetted text is TCG Shop Simulator card values in opened packs. 
+Run Order:
+1. download.py
+2. getframes.py
+3. initialFilteringTrain.py (if training a new model)
+4. initialFilteringPreds.py
+5. 
 # TDL 
 * Filter the results for the images through the initial filter for similarity.
 * Crop the targeted images to the relevant are where the text can occur.
