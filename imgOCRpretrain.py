@@ -37,15 +37,15 @@ def train_transforms(img):
     # Also, setup an image cropping specific to this task
     (left, upper, right, lower) = (460,260,580,290)
     img = img.crop((left, upper, right, lower))
-    img = transforms.GaussianBlur(kernel_size=(5, 9), sigma=(0.1, 5))(img)
+    img = transforms.GaussianBlur(kernel_size=(5, 9), sigma=(0.01, 0.1))(img)
     return img
 
 # Training and Dataset Config
 @dataclass(frozen=True)
 class TrainingConfig:
     BATCH_SIZE: int = 10
-    EPOCHS: int = 12
-    LEARNING_RATE: float = 0.00005
+    EPOCHS: int = 8
+    LEARNING_RATE: float = 0.0005
 
 @dataclass(frozen=True)
 class DatasetConfig:
@@ -56,7 +56,7 @@ class ModelConfig:
     MODEL_NAME: str = "microsoft/trocr-small-printed"
 
 class CustomOCRDataset(Dataset):
-    def __init__(self, root_dir, df, processor, max_target_length=16):
+    def __init__(self, root_dir, df, processor, max_target_length=10):
         self.root_dir = root_dir
         self.df = df
         self.processor = processor
@@ -164,14 +164,14 @@ res = trainer.train()
 res
 res.global_step
 
-# Save Model checkpoint
-def zip_folder(folder_path, zip_path):
-  with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-    for root, _, files in os.walk(folder_path):
-      for file in files:
-        zipf.write(os.path.join(root, file),
-                   os.path.relpath(os.path.join(root, file),
-                                   os.path.join(folder_path, '..')))
+# Optional: Zip Model checkpoint
+# def zip_folder(folder_path, zip_path):
+#   with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+#     for root, _, files in os.walk(folder_path):
+#       for file in files:
+#         zipf.write(os.path.join(root, file),
+#                    os.path.relpath(os.path.join(root, file),
+#                                    os.path.join(folder_path, '..')))
             
-zip_folder('seq2seq_model_digital/checkpoint-'+str(res.global_step), 
-           'seq2seq_model_digital/checkpoint-'+str(res.global_step)+'.zip')
+# zip_folder('seq2seq_model_digital/checkpoint-'+str(res.global_step), 
+#            'seq2seq_model_digital/checkpoint-'+str(res.global_step)+'.zip')
