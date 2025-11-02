@@ -4,10 +4,6 @@ import numpy as np
 import pandas as pd
 pd.options.mode.chained_assignment = None  # default='warn'
 
-# Seed NumPy randomness if reproducability desired
-np.random.seed(4444)
-predParentDir = Path.cwd() / "Preds"
-
 def numsOnly(pred : str):
     # Simply removes non-numeric characters
     if pd.isna(pred):
@@ -189,6 +185,7 @@ def predVoting(preds_ssID: pd.DataFrame, preds: pd.DataFrame) -> pd.Series:
 
 def predCheck(mem_name: str):
     # Do some contextual adjustments and inference of values from the predictions
+    predParentDir = Path.cwd() / "Preds"
     predDir = predParentDir / mem_name
     vidPreds = [f for f in os.listdir(predDir)]
     
@@ -215,5 +212,8 @@ def predCheck(mem_name: str):
     
             
         
-
-predCheck("Usada Pekora")
+def main(name)->int:
+    # Seed NumPy randomness if reproducability desired
+    np.random.seed(4444)
+    predCheck("Usada Pekora")
+    return 0

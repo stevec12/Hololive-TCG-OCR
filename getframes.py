@@ -37,6 +37,28 @@ def getFrames(member : str, vid : str, skipS : int, processNo : int) -> None:
         ret, frame = cap.read()
     cap.release()
 
+def main(excel_path: str, name: str, skipS: int = 1, threads: int = 2) -> int:
+    # Set max number of threads
+    threads = max(os.cpu_count(),2)
+    df = pd.read_excel(excel_path)
+    for i in range(0, len(df)):
+        if df.iloc[i,0]==name:
+            VIDs = df.iloc[i,2:]
+            for vid in VIDs:
+                if pd.isna(vid):
+                    break
+                print(f"Working on video {vid}.")
+                vStartTime = time.time()
+                # Create screenshot folder, or assume it already exists 
+                try: os.mkdir(f"{mem}/{vid}")
+                except: pass
+                # Setup multiprocessing and use the getFrames function 
+                with Pool(threads) as pool:
+                    pool.map(partial(getFrames, name, vid, skipS), range(threads))
+                vEndTime = time.time()
+                print(f"Time of {vEndTime - vStartTime}s.")
+    return 0
+
 if __name__ == '__main__':
     # Set max number of threads
     threads = max(os.cpu_count(), 2)
